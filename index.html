@@ -1,0 +1,647 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Garden for Aiden</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #08090d;
+    --white: #f4f0f5;
+    --muted: #aaa4b2;
+    --lavender: #b6a1d8;
+    --line: #d9c9d7;
+}
+
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: Georgia, "Times New Roman", serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+    padding: 36px 22px;
+    animation: fadeIn 1s ease;
+}
+
+.page.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* INTRO */
+#intro {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.eyebrow {
+    color: #9f95aa;
+    font: 10px Arial, sans-serif;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+}
+
+.intro-title {
+    font-size: clamp(30px, 7vw, 49px);
+    line-height: 1.4;
+    font-weight: normal;
+    max-width: 430px;
+    margin-bottom: 22px;
+}
+
+.intro-subtitle {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 38px;
+}
+
+.btn {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid #62566d;
+    padding: 13px 26px;
+    font: 10px Arial, sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn:hover {
+    background: #e8deef;
+    color: #141018;
+}
+
+/* LETTER */
+#letterPage {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.letter-heading {
+    font: 10px Arial, sans-serif;
+    color: #aaa0b2;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.paper {
+    position: relative;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #f6f0e8 0px,
+            #f6f0e8 30px,
+            #d8cbd0 31px,
+            #f6f0e8 32px
+        );
+    color: #29242c;
+    width: min(100%, 390px);
+    padding: 42px 26px 34px 48px;
+    box-shadow: 0 12px 45px #0008;
+    border-radius: 2px;
+    line-height: 32px;
+    min-height: 460px;
+}
+
+.paper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 33px;
+    border-left: 1px solid #d5a8ad;
+}
+
+.paper::after {
+    content: "✦";
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    color: #b7a0a8;
+    font-size: 12px;
+}
+
+.letter-date {
+    font: 9px Arial, sans-serif;
+    letter-spacing: 2px;
+    color: #84747d;
+    margin-bottom: 14px;
+}
+
+.letter-text {
+    font-size: 14px;
+    white-space: pre-line;
+    min-height: 300px;
+}
+
+.signature {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.next-wrap {
+    text-align: center;
+}
+
+/* GARDEN */
+#gardenPage {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.garden-label {
+    font: 10px Arial, sans-serif;
+    color: #aaa0b2;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.garden-title {
+    font-size: clamp(29px, 7vw, 43px);
+    font-weight: normal;
+    line-height: 1.3;
+    margin-bottom: 12px;
+}
+
+.garden-subtitle {
+    color: #a9a1b0;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.garden {
+    width: min(100%, 420px);
+    height: 290px;
+    position: relative;
+    margin-bottom: 25px;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #24202e 0%, #101016 60%, #08090d 100%);
+    border-bottom: 1px solid #38313e;
+}
+
+.moon {
+    position: absolute;
+    top: 25px;
+    right: 48px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e7dfeb;
+    box-shadow: 0 0 28px #c7b5e533;
+}
+
+.star {
+    position: absolute;
+    color: #d9d0e5;
+    font-size: 10px;
+    animation: twinkle 2.5s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .3; }
+    to { opacity: 1; }
+}
+
+.flower {
+    position: absolute;
+    bottom: 0;
+    width: 90px;
+    height: 215px;
+    transform-origin: bottom center;
+    animation: sway 4s ease-in-out infinite alternate;
+}
+
+.flower:nth-of-type(2n) {
+    animation-delay: -2s;
+}
+
+@keyframes sway {
+    from { transform: rotate(-3deg); }
+    to { transform: rotate(3deg); }
+}
+
+.stem {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 155px;
+    width: 2px;
+    background: #827b91;
+    transform: translateX(-50%);
+}
+
+.leaf {
+    position: absolute;
+    width: 23px;
+    height: 10px;
+    background: #777087;
+    border-radius: 100% 0 100% 0;
+    bottom: 70px;
+    left: 50%;
+    transform: rotate(-30deg);
+}
+
+.leaf.right {
+    bottom: 105px;
+    transform: rotate(35deg) scaleX(-1);
+    margin-left: -20px;
+}
+
+.bloom {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    width: 48px;
+    height: 48px;
+    transform: translateX(-50%) scale(.05);
+    animation: bloom 2s cubic-bezier(.2,.8,.2,1) forwards;
+    animation-delay: var(--delay, .3s);
+}
+
+@keyframes bloom {
+    to { transform: translateX(-50%) scale(1); }
+}
+
+.petal {
+    position: absolute;
+    left: 17px;
+    top: 0;
+    width: 15px;
+    height: 25px;
+    border-radius: 70% 70% 45% 45%;
+    background: #e7e0ed;
+    transform-origin: 7px 24px;
+}
+
+.petal:nth-child(1) { transform: rotate(0deg); }
+.petal:nth-child(2) { transform: rotate(45deg); }
+.petal:nth-child(3) { transform: rotate(90deg); }
+.petal:nth-child(4) { transform: rotate(135deg); }
+.petal:nth-child(5) { transform: rotate(180deg); }
+.petal:nth-child(6) { transform: rotate(225deg); }
+.petal:nth-child(7) { transform: rotate(270deg); }
+.petal:nth-child(8) { transform: rotate(315deg); }
+
+.center {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 12px;
+    height: 12px;
+    background: #d0c1d8;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+/* LAVENDER FLOWERS */
+.lavender .stem {
+    height: 175px;
+    background: #81758f;
+}
+
+.lavender .bloom {
+    top: 10px;
+    width: 32px;
+    height: 70px;
+    transform: translateX(-50%) scale(.05);
+}
+
+.lavender .petal {
+    width: 10px;
+    height: 14px;
+    left: 11px;
+    top: 0;
+    border-radius: 70% 70% 50% 50%;
+    background: #b5a0d2;
+    transform-origin: 5px 8px;
+}
+
+.lavender .petal:nth-child(1) { transform: translateY(0); }
+.lavender .petal:nth-child(2) { transform: translate(-8px, 9px) rotate(-45deg); }
+.lavender .petal:nth-child(3) { transform: translate(8px, 9px) rotate(45deg); }
+.lavender .petal:nth-child(4) { transform: translateY(17px); }
+.lavender .petal:nth-child(5) { transform: translate(-8px, 26px) rotate(-45deg); }
+.lavender .petal:nth-child(6) { transform: translate(8px, 26px) rotate(45deg); }
+.lavender .petal:nth-child(7) { transform: translateY(35px); }
+.lavender .petal:nth-child(8) { transform: translateY(44px); }
+
+.garden-ending {
+    max-width: 330px;
+    color: #c3bbc9;
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 24px;
+}
+
+.garden-ending strong {
+    color: #f3edf7;
+    font-weight: normal;
+}
+
+/* MUSIC */
+.music-button {
+    position: fixed;
+    z-index: 20;
+    bottom: 20px;
+    right: 18px;
+    width: 47px;
+    height: 47px;
+    border: 1px solid #65586d;
+    border-radius: 50%;
+    background: #15131b;
+    color: #f3eaf9;
+    font-size: 19px;
+    cursor: pointer;
+    box-shadow: 0 5px 25px #0008;
+}
+
+.music-panel {
+    display: none;
+    position: fixed;
+    z-index: 19;
+    bottom: 78px;
+    right: 12px;
+    width: min(340px, calc(100vw - 24px));
+    background: #17151d;
+    border: 1px solid #3a3242;
+    padding: 14px;
+    box-shadow: 0 8px 35px #0009;
+}
+
+.music-panel.open {
+    display: block;
+    animation: fadeIn .3s ease;
+}
+
+.music-caption {
+    font: 9px Arial, sans-serif;
+    color: #b8a9c6;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.music-panel iframe {
+    width: 100%;
+    height: 152px;
+    border: 0;
+    border-radius: 10px;
+}
+
+.small-note {
+    color: #847c8b;
+    font: 10px Arial, sans-serif;
+    line-height: 1.7;
+    margin-top: 8px;
+}
+
+@media (max-width: 380px) {
+    .paper {
+        padding-left: 43px;
+        padding-right: 18px;
+    }
+
+    .paper::before {
+        left: 29px;
+    }
+
+    .letter-text {
+        font-size: 12px;
+    }
+
+    .flower {
+        transform: scale(.85);
+        transform-origin: bottom center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1: INTRO -->
+<section id="intro" class="page active">
+    <p class="eyebrow">a little something for you</p>
+
+    <h1 class="intro-title">
+        i hope you read this,<br>
+        even if it's too late.
+    </h1>
+
+    <p class="intro-subtitle">
+        some things are easier to write<br>
+        than they are to say.
+    </p>
+
+    <button class="btn" onclick="showPage('letterPage')">
+        read my letter ↗
+    </button>
+</section>
+
+<!-- PAGE 2: LETTER -->
+<section id="letterPage" class="page">
+    <p class="letter-heading">a letter for you</p>
+
+    <article class="paper">
+        <p class="letter-date">WRITTEN WITH LOVE</p>
+        <div id="letterText" class="letter-text"></div>
+        <p id="signature" class="signature"></p>
+    </article>
+
+    <div class="next-wrap">
+        <button class="btn" onclick="showPage('gardenPage')">
+            one last thing ↗
+        </button>
+    </div>
+</section>
+
+<!-- PAGE 3: FLOWER GARDEN -->
+<section id="gardenPage" class="page">
+    <p class="garden-label">made just for you</p>
+    <h2 class="garden-title">A little garden<br>for Aiden.</h2>
+    <p class="garden-subtitle">
+        if my words could grow into flowers,<br>
+        this is what they would look like.
+    </p>
+
+    <div class="garden">
+        <div class="moon"></div>
+        <span class="star" style="top:30px;left:45px;">✦</span>
+        <span class="star" style="top:78px;left:100px;">✧</span>
+        <span class="star" style="top:50px;left:190px;">✦</span>
+        <span class="star" style="top:115px;right:35px;">✧</span>
+        <span class="star" style="top:155px;left:35px;">✦</span>
+
+        <!-- Edelweiss -->
+        <div class="flower" style="left:13%;--delay:.3s;">
+            <div class="stem"></div>
+            <div class="leaf"></div><div class="leaf right"></div>
+            <div class="bloom">
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="center"></i>
+            </div>
+        </div>
+
+        <div class="flower" style="left:37%;transform:scale(.82);--delay:.8s;">
+            <div class="stem"></div>
+            <div class="leaf"></div><div class="leaf right"></div>
+            <div class="bloom">
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="center"></i>
+            </div>
+        </div>
+
+        <!-- Lavender -->
+        <div class="flower lavender" style="left:57%;transform:scale(.85);--delay:1s;">
+            <div class="stem"></div>
+            <div class="leaf"></div><div class="leaf right"></div>
+            <div class="bloom">
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+            </div>
+        </div>
+
+        <div class="flower lavender" style="left:73%;transform:scale(.72);--delay:1.4s;">
+            <div class="stem"></div>
+            <div class="leaf"></div><div class="leaf right"></div>
+            <div class="bloom">
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+                <i class="petal"></i><i class="petal"></i>
+            </div>
+        </div>
+    </div>
+
+    <p class="garden-ending">
+        No grand promises, no perfect lines.<br>
+        Just a little love that grows with time.<br>
+        <strong>And this little garden is yours.</strong>
+    </p>
+
+    <button class="btn" onclick="showPage('intro')">
+        read again ↺
+    </button>
+</section>
+
+<!-- MUSIC BUTTON, AVAILABLE ON EVERY PAGE -->
+<button class="music-button" onclick="toggleMusic()" aria-label="Open music player">
+    ♫
+</button>
+
+<div id="musicPanel" class="music-panel">
+    <p class="music-caption">a song for this little garden</p>
+
+    <iframe
+        src="https://open.spotify.com/embed/track/7Ewz6bJ97vUqk5HdkvguFQ?utm_source=generator&theme=0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+    </iframe>
+
+    <p class="small-note">
+        Press play to listen. Spotify may require you to start playback manually.
+    </p>
+</div>
+
+<script>
+const letter = `I love you like a flower loves the light,
+quietly blooming beneath the moonlight.
+
+Like edelweiss, delicate yet rare,
+a little piece of beauty beyond compare.
+
+Like lavender dancing in the evening breeze,
+you bring a quiet kind of sweetness to me.
+
+And if I could gather every flower in the sky,
+I'd lay them at your feet, one by one, with time.
+
+No grand promises, no perfect lines,
+just a little love that grows with time.
+
+So, Aiden, if these words could bloom,
+I'd let them grow into a garden just for you.`;
+
+let typingStarted = false;
+let musicOpened = false;
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+
+    document.getElementById(pageId).classList.add('active');
+
+    if (pageId === 'letterPage' && !typingStarted) {
+        typingStarted = true;
+        typeLetter();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function typeLetter() {
+    const target = document.getElementById('letterText');
+    const signature = document.getElementById('signature');
+    let i = 0;
+
+    function type() {
+        if (i < letter.length) {
+            target.textContent += letter.charAt(i);
+            i++;
+            setTimeout(type, 27);
+        } else {
+            signature.textContent = '— always, in my own little way.';
+        }
+    }
+
+    type();
+}
+
+function toggleMusic() {
+    const panel = document.getElementById('musicPanel');
+    panel.classList.toggle('open');
+    musicOpened = panel.classList.contains('open');
+}
+</script>
+
+</body>
+</html>
